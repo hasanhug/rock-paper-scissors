@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rock Paper Scissors v1</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+
+    <h1>Rock, Paper, Scissors!</h1>
+    <p>Version 1.0 (Text-Based Prototype)</p>
+    
+    <!-- This button triggers the game when clicked -->
+    <button onclick="playGame()" style="padding: 15px 30px; font-size: 18px; cursor: pointer;">
+        Play Game
+    </button>
+
+    <script>
+        function playGame() {
+            // 1. Get the player's choice and turn it to lowercase
+            let playerChoice = prompt("Enter rock, paper, or scissors:").toLowerCase();
+
+            // Check if the player entered a valid option
+            if (playerChoice !== "rock" && playerChoice !== "paper" && playerChoice !== "scissors") {
+                alert("Invalid choice! Please type rock, paper, or scissors.");
+                return; // Stops the game if they typed a typo
+            }
+
+            // 2. Generate a random choice for the computer
+            let choices = ["rock", "paper", "scissors"];
+            // Math.random() picks a decimal number, Math.floor rounds it down to 0, 1, or 2
+            let randomNumber = Math.floor(Math.random() * 3); 
+            let computerChoice = choices[randomNumber];
+
+            // 3. Compare choices and determine the winner
+            let result = "";
+
+            if (playerChoice === computerChoice) {
+                result = "It's a tie!";
+            } else if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+                result = "You win! 🎉";
+            } else {
+                result = "The computer wins! 🤖";
+            }
+
+            // 4. Display the results back to the player
+            alert("You chose: " + playerChoice + "\nComputer chose: " + computerChoice + "\n\n" + result);
+        }
+    </script>
+
+</body>
+</html>
