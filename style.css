@@ -1,0 +1,443 @@
+/* Google Fonts: Fredoka for bouncy, punchy arcade style */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #1b0933 0%, #2f1057 50%, #4c1a7d 100%);
+    --card-bg: rgba(26, 12, 53, 0.85);
+    --card-border: #ff007f;
+    --neon-pink: #ff2a85;
+    --neon-cyan: #00e5ff;
+    --neon-yellow: #ffd000;
+    --neon-green: #00ff88;
+    --neon-red: #ff3b56;
+    --text-light: #ffffff;
+    --text-muted: #bda8e6;
+    --btn-rock: #ff4757;
+    --btn-paper: #2ed573;
+    --btn-scissors: #1e90ff;
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    font-family: 'Fredoka', cursive, sans-serif;
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    color: var(--text-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Background Arcade Stars / Glow Effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255, 42, 133, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 208, 0, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.game-container {
+    position: relative;
+    z-index: 1;
+    background: var(--card-bg);
+    border: 3px solid var(--neon-pink);
+    border-radius: 28px;
+    box-shadow: 
+        0 15px 35px var(--shadow-dark),
+        0 0 20px rgba(255, 42, 133, 0.3),
+        inset 0 0 15px rgba(255, 42, 133, 0.15);
+    max-width: 580px;
+    width: 100%;
+    padding: 30px 25px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+/* Header & Title */
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ffd000, #ff2a85, #00e5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 8px rgba(255, 42, 133, 0.5));
+    margin-bottom: 5px;
+}
+
+.header .subtitle {
+    font-size: 0.95rem;
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+/* Scoreboard */
+.scoreboard {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.score-card {
+    background: rgba(14, 6, 30, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 10px 18px;
+    min-width: 95px;
+    box-shadow: 0 4px 10px var(--shadow-dark);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.score-card.player {
+    border-color: var(--neon-cyan);
+}
+
+.score-card.computer {
+    border-color: var(--neon-pink);
+}
+
+.score-card.ties {
+    border-color: var(--neon-yellow);
+}
+
+.score-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.score-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1.1;
+    margin-top: 4px;
+}
+
+/* Battle Arena */
+.arena {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(10, 4, 22, 0.6);
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 25px 15px;
+    margin-bottom: 20px;
+    min-height: 160px;
+    position: relative;
+}
+
+.arena-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.slot-tag {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.hand-display {
+    font-size: 4rem;
+    line-height: 1;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    transition: transform 0.2s ease;
+}
+
+/* Computer hand mirrored so hands face each other */
+#computerHand {
+    transform: scaleX(-1);
+}
+
+.vs-badge {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--neon-yellow);
+    background: rgba(255, 208, 0, 0.15);
+    border: 2px solid var(--neon-yellow);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(255, 208, 0, 0.4);
+    z-index: 2;
+}
+
+/* Shake Animation */
+@keyframes shakePlayerFist {
+    0% { transform: rotate(0deg) translateY(0); }
+    20% { transform: rotate(-25deg) translateY(-10px); }
+    40% { transform: rotate(15deg) translateY(6px); }
+    60% { transform: rotate(-20deg) translateY(-8px); }
+    80% { transform: rotate(10deg) translateY(4px); }
+    100% { transform: rotate(0deg) translateY(0); }
+}
+
+@keyframes shakeComputerFist {
+    0% { transform: scaleX(-1) rotate(0deg) translateY(0); }
+    20% { transform: scaleX(-1) rotate(-25deg) translateY(-10px); }
+    40% { transform: scaleX(-1) rotate(15deg) translateY(6px); }
+    60% { transform: scaleX(-1) rotate(-20deg) translateY(-8px); }
+    80% { transform: scaleX(-1) rotate(10deg) translateY(4px); }
+    100% { transform: scaleX(-1) rotate(0deg) translateY(0); }
+}
+
+.animating-player {
+    animation: shakePlayerFist 0.9s ease-in-out infinite;
+}
+
+.animating-computer {
+    animation: shakeComputerFist 0.9s ease-in-out infinite;
+}
+
+/* Announcement & Message Area */
+.message-box {
+    margin-bottom: 25px;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-badge {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.result-badge.default {
+    color: var(--neon-cyan);
+}
+
+.result-badge.win {
+    color: var(--neon-green);
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid var(--neon-green);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    animation: popBounce 0.4s ease;
+}
+
+.result-badge.lose {
+    color: var(--neon-red);
+    background: rgba(255, 59, 86, 0.15);
+    border: 1px solid var(--neon-red);
+    box-shadow: 0 0 15px rgba(255, 59, 86, 0.3);
+    animation: popBounce 0.4s ease;
+}
+
+.result-badge.tie {
+    color: var(--neon-yellow);
+    background: rgba(255, 208, 0, 0.15);
+    border: 1px solid var(--neon-yellow);
+    box-shadow: 0 0 15px rgba(255, 208, 0, 0.3);
+    animation: popBounce 0.4s ease;
+}
+
+@keyframes popBounce {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Choice Buttons */
+.controls-title {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.choices-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.choice-btn {
+    flex: 1;
+    max-width: 130px;
+    background: #1e1338;
+    color: var(--text-light);
+    border: 2px solid transparent;
+    border-radius: 20px;
+    padding: 14px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    position: relative;
+    box-shadow: 0 6px 0 #0d061c, 0 10px 15px var(--shadow-dark);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
+}
+
+.choice-btn .btn-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.choice-btn .btn-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Button color accents */
+.choice-btn[data-choice="rock"] {
+    border-color: var(--btn-rock);
+}
+.choice-btn[data-choice="rock"]:hover:not(:disabled) {
+    background: linear-gradient(180deg, #2b1836 0%, #3d142b 100%);
+    box-shadow: 0 6px 0 #200a16, 0 0 18px rgba(255, 71, 87, 0.4);
+}
+
+.choice-btn[data-choice="paper"] {
+    border-color: var(--btn-paper);
+}
+.choice-btn[data-choice="paper"]:hover:not(:disabled) {
+    background: linear-gradient(180deg, #142e2b 0%, #153b2f 100%);
+    box-shadow: 0 6px 0 #0a1f18, 0 0 18px rgba(46, 213, 115, 0.4);
+}
+
+.choice-btn[data-choice="scissors"] {
+    border-color: var(--btn-scissors);
+}
+.choice-btn[data-choice="scissors"]:hover:not(:disabled) {
+    background: linear-gradient(180deg, #132442 0%, #153059 100%);
+    box-shadow: 0 6px 0 #0a1830, 0 0 18px rgba(30, 144, 255, 0.4);
+}
+
+/* 3D button press interaction */
+.choice-btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #0d061c, 0 4px 8px var(--shadow-dark);
+}
+
+.choice-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+    transform: none;
+    box-shadow: 0 4px 0 #0d061c;
+}
+
+/* Footer / Reset Action */
+.footer-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.reset-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+    color: var(--text-light);
+    border-color: var(--neon-pink);
+    background: rgba(255, 42, 133, 0.15);
+    box-shadow: 0 0 10px rgba(255, 42, 133, 0.3);
+}
+
+.reset-btn:active {
+    transform: scale(0.96);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .game-container {
+        padding: 22px 16px;
+    }
+
+    .header h1 {
+        font-size: 1.7rem;
+    }
+
+    .score-card {
+        padding: 8px 12px;
+        min-width: 80px;
+    }
+
+    .score-value {
+        font-size: 1.5rem;
+    }
+
+    .hand-display {
+        font-size: 3.2rem;
+        height: 60px;
+    }
+
+    .vs-badge {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .choice-btn {
+        padding: 12px 6px;
+    }
+
+    .choice-btn .btn-icon {
+        font-size: 1.8rem;
+    }
+
+    .choice-btn .btn-text {
+        font-size: 0.85rem;
+    }
+}
+
