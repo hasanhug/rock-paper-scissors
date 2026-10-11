@@ -37,6 +37,8 @@ const computerHandEl = document.getElementById('computerHand');
 const resultBadgeEl = document.getElementById('resultBadge');
 const choiceButtons = document.querySelectorAll('.choice-btn');
 const resetBtn = document.getElementById('resetBtn');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIconEl = document.getElementById('themeIcon'); 
 
 // Helper to disable/enable choice buttons during animation
 function setButtonsDisabled(disabled) {
@@ -123,6 +125,41 @@ function resetGame() {
     resultBadgeEl.textContent = 'Choose your weapon to start!';
 }
 
+// Theme Toggle Management
+function applyTheme(theme) {
+     if (theme === 'light') {
+         document.documentElement.setAttribute('data-theme', 'light');
+         if (themeIconEl) themeIconEl.textContent = '🌙';
+          if (themeToggleBtn) themeToggleBtn.setAttribute('aria-label', 'Switch to dark theme');
+          } else {
+             document.documentElement.removeAttribute('data-theme');
+        if (themeIconEl) themeIconEl.textContent = '☀️';
+        if (themeToggleBtn) themeToggleBtn.setAttribute('aria-label', 'Switch to light theme');
+    }
+}
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        applyTheme('light');
+    } else {
+        applyTheme('dark');
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(newTheme);
+    try {
+        localStorage.setItem('theme', newTheme);
+    } catch (e) {
+        // localStorage might be unavailable in certain sandbox environments
+    }
+}
+
 // Event Listeners
 choiceButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -133,3 +170,9 @@ choiceButtons.forEach(btn => {
 
 resetBtn.addEventListener('click', resetGame);
 
+if (themeToggleBtn) {
+       themeToggleBtn.addEventListener('click', toggleTheme);
+}
+
+// Initialize theme on load
+initTheme();

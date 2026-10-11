@@ -16,6 +16,47 @@
     --btn-paper: #2ed573;
     --btn-scissors: #1e90ff;
     --shadow-dark: rgba(0, 0, 0, 0.4);
+    --score-card-bg: rgba(14, 6, 30, 0.7);
+    --score-card-border: rgba(255, 255, 255, 0.15);
+    --arena-bg: rgba(10, 4, 22, 0.6);
+    --arena-border: rgba(255, 255, 255, 0.15);
+    --btn-choice-bg: #1e1338;
+    --btn-choice-shadow: #0d061c;
+    --btn-rock-hover: linear-gradient(180deg, #2b1836 0%, #3d142b 100%);
+    --btn-paper-hover: linear-gradient(180deg, #142e2b 0%, #153b2f 100%);
+    --btn-scissors-hover: linear-gradient(180deg, #132442 0%, #153059 100%);
+    --reset-btn-border: rgba(255, 255, 255, 0.2);
+    --theme-btn-bg: rgba(255, 255, 255, 0.08);
+    --theme-btn-border: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #f5f0fb 0%, #eae0f5 50%, #dfd3f2 100%);
+    --card-bg: rgba(255, 255, 255, 0.88);
+    --card-border: #e0287a;
+    --neon-pink: #d81b60;
+    --neon-cyan: #0097a7;
+    --neon-yellow: #d97706;
+    --neon-green: #059669;
+    --neon-red: #dc2626;
+    --text-light: #1f1435;
+    --text-muted: #6b5a8e;
+    --btn-rock: #e11d48;
+    --btn-paper: #10b981;
+    --btn-scissors: #2563eb;
+    --shadow-dark: rgba(70, 30, 110, 0.15);
+    --score-card-bg: rgba(247, 243, 253, 0.95);
+    --score-card-border: rgba(138, 92, 196, 0.25);
+    --arena-bg: rgba(243, 238, 252, 0.85);
+    --arena-border: rgba(138, 92, 196, 0.35);
+    --btn-choice-bg: #ffffff;
+    --btn-choice-shadow: #c7b6e3;
+    --btn-rock-hover: linear-gradient(180deg, #fff0f3 0%, #ffe4e8 100%);
+    --btn-paper-hover: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+    --btn-scissors-hover: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+    --reset-btn-border: rgba(107, 90, 142, 0.3);
+    --theme-btn-bg: rgba(138, 92, 196, 0.12);
+    --theme-btn-border: rgba(138, 92, 196, 0.3);
 }
 
 * {
@@ -35,6 +76,7 @@ body {
     align-items: center;
     padding: 20px;
     overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Background Arcade Stars / Glow Effect */
@@ -53,6 +95,13 @@ body::before {
     z-index: 0;
 }
 
+[data-theme="light"] body::before {
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(216, 27, 96, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(0, 151, 167, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.06) 0%, transparent 50%);
+}
+
 .game-container {
     position: relative;
     z-index: 1;
@@ -68,6 +117,38 @@ body::before {
     padding: 30px 25px;
     text-align: center;
     backdrop-filter: blur(10px);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--theme-btn-bg);
+    border: 2px solid var(--theme-btn-border);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: var(--text-light);
+    box-shadow: 0 4px 10px var(--shadow-dark);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    z-index: 10;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 14px var(--neon-cyan);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.95);
 }
 
 /* Header & Title */
@@ -100,13 +181,13 @@ body::before {
 }
 
 .score-card {
-    background: rgba(14, 6, 30, 0.7);
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    background: var(--score-card-bg);
+    border: 2px solid var(--score-card-border);
     border-radius: 16px;
     padding: 10px 18px;
     min-width: 95px;
     box-shadow: 0 4px 10px var(--shadow-dark);
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.2s, border-color 0.2s, background 0.3s;
 }
 
 .score-card.player {
@@ -127,6 +208,7 @@ body::before {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--text-muted);
+    transition: color 0.3s ease; 
 }
 
 .score-value {
@@ -135,6 +217,7 @@ body::before {
     color: var(--text-light);
     line-height: 1.1;
     margin-top: 4px;
+    transition: color 0.3s ease;
 }
 
 /* Battle Arena */
@@ -142,13 +225,14 @@ body::before {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: rgba(10, 4, 22, 0.6);
-    border: 2px dashed rgba(255, 255, 255, 0.15);
+    background: var(--arena-bg10);
+    border: 2px dashed var(--arena border);
     border-radius: 20px;
     padding: 25px 15px;
     margin-bottom: 20px;
     min-height: 160px;
     position: relative;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .arena-slot {
@@ -299,7 +383,7 @@ body::before {
 .choice-btn {
     flex: 1;
     max-width: 130px;
-    background: #1e1338;
+    background: var(--btn-choice-bg);
     color: var(--text-light);
     border: 2px solid transparent;
     border-radius: 20px;
@@ -311,8 +395,8 @@ body::before {
     gap: 6px;
     font-family: inherit;
     position: relative;
-    box-shadow: 0 6px 0 #0d061c, 0 10px 15px var(--shadow-dark);
-    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease;
+    box-shadow: 0 6px 0 var(--btn-choice-shadow), 0 10px 15px var(--shadow-dark);
+   transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.2s ease, background 0.2s ease, color 0.3s ease;
 }
 
 .choice-btn .btn-icon {
@@ -332,30 +416,30 @@ body::before {
     border-color: var(--btn-rock);
 }
 .choice-btn[data-choice="rock"]:hover:not(:disabled) {
-    background: linear-gradient(180deg, #2b1836 0%, #3d142b 100%);
-    box-shadow: 0 6px 0 #200a16, 0 0 18px rgba(255, 71, 87, 0.4);
+     background: var(--btn-rock-hover);
+    box-shadow: 0 6px 0 var(--btn-choice-shadow), 0 0 18px rgba(255, 71, 87, 0.4);
 }
 
 .choice-btn[data-choice="paper"] {
     border-color: var(--btn-paper);
 }
 .choice-btn[data-choice="paper"]:hover:not(:disabled) {
-    background: linear-gradient(180deg, #142e2b 0%, #153b2f 100%);
-    box-shadow: 0 6px 0 #0a1f18, 0 0 18px rgba(46, 213, 115, 0.4);
+   background: var(--btn-paper-hover);
+    box-shadow: 0 6px 0 var(--btn-choice-shadow), 0 0 18px rgba(46, 213, 115, 0.4);
 }
 
 .choice-btn[data-choice="scissors"] {
     border-color: var(--btn-scissors);
 }
 .choice-btn[data-choice="scissors"]:hover:not(:disabled) {
-    background: linear-gradient(180deg, #132442 0%, #153059 100%);
-    box-shadow: 0 6px 0 #0a1830, 0 0 18px rgba(30, 144, 255, 0.4);
+background: var(--btn-scissors-hover);
+     box-shadow: 0 6px 0 var(--btn-choice-shadow), 0 0 18px rgba(30, 144, 255, 0.4);
 }
 
 /* 3D button press interaction */
 .choice-btn:active:not(:disabled) {
     transform: translateY(4px);
-    box-shadow: 0 2px 0 #0d061c, 0 4px 8px var(--shadow-dark);
+    box-shadow: 0 2px 0 var(--btn-choice-shadow), 0 4px 8px var(--shadow-dark);
 }
 
 .choice-btn:disabled {
@@ -363,7 +447,7 @@ body::before {
     cursor: not-allowed;
     filter: grayscale(0.5);
     transform: none;
-    box-shadow: 0 4px 0 #0d061c;
+   box-shadow: 0 4px 0 var(--btn-choice-shadow);
 }
 
 /* Footer / Reset Action */
@@ -375,7 +459,7 @@ body::before {
 .reset-btn {
     background: transparent;
     color: var(--text-muted);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--reset-btn-border);
     border-radius: 12px;
     padding: 8px 18px;
     font-size: 0.85rem;
