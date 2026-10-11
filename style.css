@@ -225,8 +225,8 @@ body::before {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: var(--arena-bg10);
-    border: 2px dashed var(--arena border);
+    background: var(--arena-bg);
+    border: 2px dashed var(--arena-border);
     border-radius: 20px;
     padding: 25px 15px;
     margin-bottom: 20px;
