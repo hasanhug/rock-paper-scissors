@@ -262,9 +262,10 @@ body::before {
     transition: transform 0.2s ease;
 }
 
-/* Computer hand mirrored so hands face each other */
+/* Computer hand mirrored and tinted neon pink/cyber style */
 #computerHand {
     transform: scaleX(-1);
+    filter: hue-roate(290deg) saturate(2.4) brightness(1.15) drop-shadow(0 0 14px rgba(255, 42, 133, 0.75));
 }
 
 .vs-badge {
@@ -284,31 +285,31 @@ body::before {
     z-index: 2;
 }
 
-/* Shake Animation */
+/* Vigoruos Shake Animation */
 @keyframes shakePlayerFist {
-    0% { transform: rotate(0deg) translateY(0); }
-    20% { transform: rotate(-25deg) translateY(-10px); }
-    40% { transform: rotate(15deg) translateY(6px); }
-    60% { transform: rotate(-20deg) translateY(-8px); }
-    80% { transform: rotate(10deg) translateY(4px); }
-    100% { transform: rotate(0deg) translateY(0); }
+    0%  { transform: rotate(0deg) translateY(0); }
+    18% { transform: rotate(-45deg) translateY(-26px); }
+    38% { transform: rotate(32deg) translateY(16px); }
+    58% {transform: rotate(-38deg) translateY(-20px); }
+    78% {transform: rotate(24deg) translateY(12px); }
+    100% {transform: rotate(0deg) translateY(0); }
 }
 
 @keyframes shakeComputerFist {
     0% { transform: scaleX(-1) rotate(0deg) translateY(0); }
-    20% { transform: scaleX(-1) rotate(-25deg) translateY(-10px); }
-    40% { transform: scaleX(-1) rotate(15deg) translateY(6px); }
-    60% { transform: scaleX(-1) rotate(-20deg) translateY(-8px); }
-    80% { transform: scaleX(-1) rotate(10deg) translateY(4px); }
+    18% { transform: scaleX(-1) rotate(-45deg) translateY(-26px); }
+    38% { transform: scaleX(-1) rotate(32deg) translateY(16px); }
+    58% { transform: scaleX(-1) rotate(-38deg) translateY(-20px); }
+    78% { transform: scaleX(-1) rotate(24deg) translateY(12px); }
     100% { transform: scaleX(-1) rotate(0deg) translateY(0); }
 }
 
 .animating-player {
-    animation: shakePlayerFist 0.9s ease-in-out infinite;
+    animation: shakePlayerFist 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinte;
 }
 
 .animating-computer {
-    animation: shakeComputerFist 0.9s ease-in-out infinite;
+animation: shakeComputerFist 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinte;
 }
 
 /* Announcement & Message Area */
